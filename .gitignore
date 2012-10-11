@@ -1,0 +1,6 @@
+.DS_STORE
+*.pyc
+*.tmp
+*.swp
+.idea
+.project
