@@ -17,7 +17,7 @@ Basically you do have three options how you can install django-eve-igb:
 
 1. [Download](https://github.com/jenslauterbach/django-eve-igb/zipball/master "Direct download link") the latest version and run `python setup.py install`
 2. Clone repository and run `python setup.py install` 
-3. Run `pip install git+https://github.com/jenslauterbach/django-eve-igb`
+3. Run `pip install git+https://github.com/jenslauterbach/django-eve-igb.git`
 
 # Quickstart
 ------------------
