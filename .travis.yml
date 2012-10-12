@@ -8,6 +8,7 @@ env:
   - DJANGO=1.4
 install:
   - pip install -q Django==$DJANGO --use-mirrors
+  - pip install -q -r requirements_tests.txt
 script:
   - python setup.py -q install
   - python eveigb/tests/runtests.py eveigb.tests.tests:IGBHeadersTestCase
