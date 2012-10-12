@@ -132,7 +132,7 @@ class IGBHeadersTestCase(TestCase):
     
     def test_with_all_headers_set(self):
         """
-        This teset checks if all headers are correctly applied to their
+        This test checks if all headers are correctly applied to their
         respective class attributes.
         """
         request = self.test_request

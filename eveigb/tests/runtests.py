@@ -12,7 +12,6 @@ EXTERNAL_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.messages',
     'django.contrib.sessions',
-    'django.contrib.staticfiles',
     'django.contrib.sitemaps',
     'django.contrib.sites',
 ]
@@ -32,14 +31,15 @@ if not settings.configured:
         DATABASES={
             "default": {
                 "ENGINE": "django.db.backends.sqlite3",
-                "NAME": ":memory:",
             }
         },
         INSTALLED_APPS=INSTALLED_APPS,
         COVERAGE_MODULE_EXCLUDES=COVERAGE_MODULE_EXCLUDES,
         COVERAGE_REPORT_HTML_OUTPUT_DIR=os.path.join(
-            os.path.dirname(__file__), 'coverage')
+            os.path.dirname(__file__), 'coverage'),
+        SITE_ID=1
     )
+        
 
 from django_coverage.coverage_runner import CoverageRunner
 from django_nose import NoseTestSuiteRunner
