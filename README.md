@@ -1,5 +1,7 @@
 **Please feel free to write feature requests and bug reports!**
 
+[![Build Status](https://secure.travis-ci.org/jenslauterbach/django-eve-igb.png)](http://travis-ci.org/jenslauterbach/django-eve-igb)
+
 # django-eve-igb
 ------------------
 
