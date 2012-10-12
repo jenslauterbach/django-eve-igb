@@ -106,11 +106,6 @@ class IGBHeadersTestCase(TestCase):
         
         self.assertFalse(headers.is_igb)
         
-        unexpected_attributes = self.igbheaders_attributes
-        unexpected_attributes.remove('is_igb')
-        
-        self._search_for_unexpected_attributes(headers, unexpected_attributes)
-        
     def test_untrusted_request(self):
         """
         Tests that only 'is_igb' and 'trusted' attributes are set on the
@@ -122,13 +117,6 @@ class IGBHeadersTestCase(TestCase):
         
         self.assertTrue(headers.is_igb)
         self.assertFalse(headers.trusted)
-        
-        unexpected_attributes = self.igbheaders_attributes
-        unexpected_attributes.remove('is_igb')
-        unexpected_attributes.remove('trusted')
-        
-        self._search_for_unexpected_attributes(headers, unexpected_attributes)
-        
     
     def test_with_all_headers_set(self):
         """

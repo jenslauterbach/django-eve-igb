@@ -28,55 +28,51 @@ class IGBHeaders(object):
 
         Keyword arguments:
         request -- Django HttpRequest object
+        
         """
         # More information on the headers can be found in CCPs documentation:
         # http://wiki.eveonline.com/en/wiki/IGB_Headers
         self.is_igb = True if 'HTTP_EVE_TRUSTED' in request.META else False
-
-        # only do any further processing of it's the IGB
-        if not self.is_igb:
-            return
-
-        self.trusted = True if request.META['HTTP_EVE_TRUSTED'] == 'Yes' else False
+        self.trusted = True if request.META.get('HTTP_EVE_TRUSTED', 'No') == 'Yes' else False
 
         # only if the user trusted the website the other HEADERS will be send by the IGB.
-        if self.trusted:
-            self.serverip = request.META['HTTP_EVE_SERVERIP']
-            self.charname = request.META['HTTP_EVE_CHARNAME']
-            self.charid = int(request.META['HTTP_EVE_CHARID'])
-            self.corpname = request.META['HTTP_EVE_CORPNAME']
-            self.corpid = int(request.META['HTTP_EVE_CORPID'])
-            self.regionname = request.META['HTTP_EVE_REGIONNAME']
-            self.constellationname = request.META['HTTP_EVE_CONSTELLATIONNAME']
-            self.solarsystemid = int(request.META['HTTP_EVE_SOLARSYSTEMID'])
-            self.solarsystemname = request.META['HTTP_EVE_SOLARSYSTEMNAME']
-            self.shipid = int(request.META['HTTP_EVE_SHIPID'])
-            self.shipname = request.META['HTTP_EVE_SHIPNAME']
-            self.shiptypeid = int(request.META['HTTP_EVE_SHIPTYPEID'])
-            self.shiptypename = request.META['HTTP_EVE_SHIPTYPENAME']
+        #if self.trusted:
+        self.serverip = request.META.get('HTTP_EVE_SERVERIP', '')
+        self.charname = request.META.get('HTTP_EVE_CHARNAME', '')
+        self.charid = int(request.META.get('HTTP_EVE_CHARID', 0))
+        self.corpname = request.META.get('HTTP_EVE_CORPNAME', '')
+        self.corpid = int(request.META.get('HTTP_EVE_CORPID', 0))
+        self.regionname = request.META.get('HTTP_EVE_REGIONNAME', '')
+        self.constellationname = request.META.get('HTTP_EVE_CONSTELLATIONNAME', '')
+        self.solarsystemid = int(request.META.get('HTTP_EVE_SOLARSYSTEMID', 0))
+        self.solarsystemname = request.META.get('HTTP_EVE_SOLARSYSTEMNAME', '')
+        self.shipid = int(request.META.get('HTTP_EVE_SHIPID', 0))
+        self.shipname = request.META.get('HTTP_EVE_SHIPNAME', '')
+        self.shiptypeid = int(request.META.get('HTTP_EVE_SHIPTYPEID', 0))
+        self.shiptypename = request.META.get('HTTP_EVE_SHIPTYPENAME', '')
 
-            # The following headers don't have to be set by the IGB.
-            # That's why they are read from the request.META dict with get.
-            # If the header is not set a sane default will be return.
+        # The following headers don't have to be set by the IGB.
+        # That's why they are read from the request.META dict with get.
+        # If the header is not set a sane default will be return.
 
-            # Only set if the player has roles
-            self.corprole = int(request.META.get('HTTP_EVE_CORPROLE', 0))
-            self.corproles = self._get_corp_roles(self.corprole)
-            
-            # Only set if the players corporation is part of an alliance
-            self.alliancename = request.META.get('HTTP_EVE_ALLIANCENAME', '')
-            self.allianceid = int(request.META.get('HTTP_EVE_ALLIANCEID', 0))
+        # Only set if the player has roles
+        self.corprole = int(request.META.get('HTTP_EVE_CORPROLE', 0))
+        self.corproles = self._get_corp_roles(self.corprole)
+        
+        # Only set if the players corporation is part of an alliance
+        self.alliancename = request.META.get('HTTP_EVE_ALLIANCENAME', '')
+        self.allianceid = int(request.META.get('HTTP_EVE_ALLIANCEID', 0))
 
-            # Only set if the player is on a station
-            self.stationname = request.META.get('HTTP_EVE_STATIONNAME', '')
-            self.stationid = int(request.META.get('HTTP_EVE_STATIONID', 0))
+        # Only set if the player is on a station
+        self.stationname = request.META.get('HTTP_EVE_STATIONNAME', '')
+        self.stationid = int(request.META.get('HTTP_EVE_STATIONID', 0))
 
-            # Only set if the player is participating in factional warfare
-            self.warfactionid = int(request.META.get('HTTP_EVE_WARFACTIONID', 0))
+        # Only set if the player is participating in factional warfare
+        self.warfactionid = int(request.META.get('HTTP_EVE_WARFACTIONID', 0))
 
-            # TODO: add additional attributes:
-            # is_wormhole
-            # is_on_station
-            # is_factionwarfare
-            # has_alliance
-            # has_corproles
+        # TODO: add additional attributes:
+        # is_in_wormhole
+        # is_on_station
+        # is_factionwarfare
+        # has_alliance
+        # has_corproles
