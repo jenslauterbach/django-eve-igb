@@ -50,7 +50,7 @@ If you visit that page from within EVE Online using the IGB you should see this 
 -------------------
 
 1. Install test requirements with `pip install -r requirements_tests.txt`
-2. Run tests with `python eveigb/tests/runtests.py eveigb.tests.tests:IGBHeadersTestCase`
+2. Run tests with `python eveigb/tests/runtests.py eveigb.tests.tests:IGBHeaderParserTestCase`
 
 Note: I want to make running tests easier but didn't found a way yet.
 

@@ -10,4 +10,4 @@ install:
   - pip install -q -r requirements_tests.txt
 script:
   - python setup.py -q install
-  - python eveigb/tests/runtests.py eveigb.tests.tests:IGBHeadersTestCase
+  - python eveigb/tests/runtests.py eveigb.tests.tests:IGBHeaderParserTestCase

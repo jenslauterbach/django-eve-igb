@@ -1,10 +1,10 @@
 from django.test import TestCase
 from django.http import HttpRequest
 
-from eveigb import IGBHeaders
+from eveigb import IGBHeaderParser
 
 
-class IGBHeadersTestCase(TestCase):
+class IGBHeaderParserTestCase(TestCase):
     
     #-------------------------------------------------------------------------
     # Test set up
@@ -36,7 +36,7 @@ class IGBHeadersTestCase(TestCase):
         
         self.test_request = request
         
-        self.igbheaders_attributes = [
+        self.IGBHeaderParser_attributes = [
             'is_igb',
             'trusted',
             'serverip',
@@ -64,12 +64,12 @@ class IGBHeadersTestCase(TestCase):
     # Test utilities
     #-------------------------------------------------------------------------
     def _search_for_unexpected_attributes(self, instance, unexpected_attributes):
-        """ Searches the given IGBHeaders instance for the given
-        unexpected attributes. Under certain circumstances the IGBHeaders
+        """ Searches the given IGBHeaderParser instance for the given
+        unexpected attributes. Under certain circumstances the IGBHeaderParser
         instance does not contain all possible attributes.
         
         Keyword arguments:
-        instance -- The IGBHeaders instance
+        instance -- The IGBHeaderParser instance
         unexpected_attributes -- List of the attributes that are not allowed
           to be part of the instances attributes.
           
@@ -82,14 +82,14 @@ class IGBHeadersTestCase(TestCase):
     #--------------------------------------------------------------------------
     def test_init_with_none_request(self):
         """
-        Tests if 'TypeError' is thrown when IGBHeaders is initialized without
+        Tests if 'TypeError' is thrown when IGBHeaderParser is initialized without
         a 'django.http.HttpRequest' instance.
         """
         with self.assertRaises(TypeError):
-            IGBHeaders('Not django.http.HttpRequest')
+            IGBHeaderParser('Not django.http.HttpRequest')
         
         with self.assertRaises(TypeError):
-            IGBHeaders(None)
+            IGBHeaderParser(None)
     
     #--------------------------------------------------------------------------
     # Normal tests
@@ -102,18 +102,18 @@ class IGBHeadersTestCase(TestCase):
         """
         request = self.test_request
         del request.META['HTTP_EVE_TRUSTED']
-        headers = IGBHeaders(request)
+        headers = IGBHeaderParser(request)
         
         self.assertFalse(headers.is_igb)
         
     def test_untrusted_request(self):
         """
         Tests that only 'is_igb' and 'trusted' attributes are set on the
-        IGBHeaders object if the user does not trust the site.
+        IGBHeaderParser object if the user does not trust the site.
         """
         request = self.test_request
         request.META['HTTP_EVE_TRUSTED'] = 'No'
-        headers = IGBHeaders(request)
+        headers = IGBHeaderParser(request)
         
         self.assertTrue(headers.is_igb)
         self.assertFalse(headers.trusted)
@@ -124,7 +124,7 @@ class IGBHeadersTestCase(TestCase):
         respective class attributes.
         """
         request = self.test_request
-        headers = IGBHeaders(request)
+        headers = IGBHeaderParser(request)
         
         self.assertTrue(headers.trusted)
         self.assertTrue(headers.is_igb)
@@ -150,23 +150,23 @@ class IGBHeadersTestCase(TestCase):
     
     def test_warfactionid_is_set(self):
         """
-        This test ensures that IGBHeaders.warfactionid is set when
+        This test ensures that IGBHeaderParser.warfactionid is set when
         the 'HTTP_EVE_WARFACTIONID' header is set.
         """
         request = self.test_request
-        headers = IGBHeaders(request)
+        headers = IGBHeaderParser(request)
         
         self.assertEquals(headers.warfactionid, 8)
         
     def test_warfactionid_not_set(self):
         """
-        This test ensures that IGBHeaders.warfactionid == None when
+        This test ensures that IGBHeaderParser.warfactionid == None when
         the user is not participating in Factional Warfare. In this
         case the 'HTTP_EVE_WARFACTIONID' won't be set.
         """
         request = self.test_request
         del request.META['HTTP_EVE_WARFACTIONID']
-        headers = IGBHeaders(request)
+        headers = IGBHeaderParser(request)
         
         self.assertEquals(headers.warfactionid, 0)
     
@@ -177,7 +177,7 @@ class IGBHeadersTestCase(TestCase):
         set.
         """
         request = self.test_request
-        headers = IGBHeaders(request)
+        headers = IGBHeaderParser(request)
         
         self.assertEquals(headers.stationname, 'Test STATIONNAME')
         self.assertEquals(headers.stationid, 5)
@@ -186,7 +186,7 @@ class IGBHeadersTestCase(TestCase):
         """
         When the player is in space the value the IGB won't send the
         corresponding headers 'HTTP_EVE_STATIONNAME' and 'HTTP_EVE_STATIONID'.
-        In that case IGBHeaders.stationname and IGBHeaders.stationid should
+        In that case IGBHeaderParser.stationname and IGBHeaderParser.stationid should
         return their defaults:
         
         stationname = '' (empty string)
@@ -197,7 +197,7 @@ class IGBHeadersTestCase(TestCase):
         request = self.test_request
         del request.META['HTTP_EVE_STATIONNAME']
         del request.META['HTTP_EVE_STATIONID']
-        headers = IGBHeaders(request)
+        headers = IGBHeaderParser(request)
         
         self.assertEquals(headers.stationname, '')
         self.assertEquals(headers.stationid, 0)
@@ -221,7 +221,7 @@ class IGBHeadersTestCase(TestCase):
         """
         request = self.test_request
         request.META['HTTP_EVE_CORPROLE'] = '1039225405767189504'
-        headers = IGBHeaders(request)
+        headers = IGBHeaderParser(request)
         
         expected_corp_role_ids = [1024, 32768, 1048576, 4194304,
             536870912, 2199023255552, 17592186044416, 1125899906842624,
@@ -244,7 +244,7 @@ class IGBHeadersTestCase(TestCase):
         """
         request = self.test_request
         del request.META['HTTP_EVE_CORPROLE']
-        headers = IGBHeaders(request)
+        headers = IGBHeaderParser(request)
     
         self.assertEquals(headers.corproles, [])
         self.assertEquals(headers.corprole, 0)

@@ -3,7 +3,7 @@ from django.http import HttpRequest
 from .constants import CORP_ROLES
 
 
-class IGBHeaders(object):
+class IGBHeaderParser(object):
     def __init__(self, request):
         if not isinstance(request, HttpRequest):
             raise TypeError("Argument 'request' must be of type django.http.HttpRequest!")

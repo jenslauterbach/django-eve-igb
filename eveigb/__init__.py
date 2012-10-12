@@ -1,1 +1,1 @@
-from igbheaders import IGBHeaders
+from .igbheaders import IGBHeaderParser
