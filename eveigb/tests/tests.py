@@ -4,7 +4,7 @@ from django.http import HttpRequest
 from eveigb import IGBHeaders
 
 
-class IGBHeadersTests(TestCase):
+class IGBHeadersTestCase(TestCase):
     
     #-------------------------------------------------------------------------
     # Test set up

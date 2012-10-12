@@ -10,4 +10,4 @@ install:
   - pip install -q Django==$DJANGO --use-mirrors
 script:
   - python setup.py -q install
-  - python manage.py test eveigb
+  - python eveigb/tests/runtests.py eveigb.tests.tests:IGBHeadersTestCase

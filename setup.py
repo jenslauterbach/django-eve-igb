@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 CLASSIFIERS = [
     'Development Status :: 5 - Production/Stable',
@@ -20,7 +20,13 @@ setup(name='django-eve-igb',
     author_email='lauterjens@googlemail.com',
     url='https://github.com/jenslauterbac/django-eve-igb',
     packages=['eveigb'],
-    requires=['django'],
+    install_requires=['django'],
+    tests_require=[
+        'django-nose',
+        'coverage',
+        'django-coverage'
+    ],
+    test_suite='eveigb.tests.runtests.runtests',
     provides=['eveigb'],
     classifiers=CLASSIFIERS
 )
