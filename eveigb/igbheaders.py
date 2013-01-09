@@ -70,10 +70,7 @@ class IGBHeaderParser(object):
         # Only set if the player is participating in factional warfare
         self.warfactionid = int(request.META.get('HTTP_EVE_WARFACTIONID', 0))
 
-        # TODO: add additional attributes:
-        # is_in_wormhole
-        # is_on_station
         self.is_on_station = True if self.stationname != '' else False
-        # is_factionwarfare
-        # has_alliance
-        # has_corproles
+        self.is_factionwarfare = True if self.warfactionid != 0 else False
+        self.has_alliance = True if self.alliancename != '' else False
+        self.has_corproles = False if not self.corproles else True

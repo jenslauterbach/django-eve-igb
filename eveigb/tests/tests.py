@@ -82,6 +82,8 @@ class IGBHeaderParserTestCase(TestCase):
     #--------------------------------------------------------------------------
     def test_init_with_none_request(self):
         """
+        test_init_with_none_request
+        
         Tests if 'TypeError' is thrown when IGBHeaderParser is initialized without
         a 'django.http.HttpRequest' instance.
         """
@@ -96,6 +98,8 @@ class IGBHeaderParserTestCase(TestCase):
     #--------------------------------------------------------------------------
     def test_none_igb_browser(self):
         """
+        test_none_igb_browser
+        
         Test that 'is_igb' returns 'False' if the 'HTTP_EVE_TRUSTED' header
         is not present in the request. That usually means that the players
         browser is not IGB.
@@ -108,6 +112,8 @@ class IGBHeaderParserTestCase(TestCase):
         
     def test_untrusted_request(self):
         """
+        test_untrusted_request
+        
         Tests that only 'is_igb' and 'trusted' attributes are set on the
         IGBHeaderParser object if the user does not trust the site.
         """
@@ -120,6 +126,8 @@ class IGBHeaderParserTestCase(TestCase):
     
     def test_with_all_headers_set(self):
         """
+        test_with_all_headers_set
+        
         This test checks if all headers are correctly applied to their
         respective class attributes.
         """
@@ -150,6 +158,8 @@ class IGBHeaderParserTestCase(TestCase):
     
     def test_warfactionid_is_set(self):
         """
+        test_warfactionid_is_set
+        
         This test ensures that IGBHeaderParser.warfactionid is set when
         the 'HTTP_EVE_WARFACTIONID' header is set.
         """
@@ -160,6 +170,8 @@ class IGBHeaderParserTestCase(TestCase):
         
     def test_warfactionid_not_set(self):
         """
+        test_warfactionid_not_set
+        
         This test ensures that IGBHeaderParser.warfactionid == None when
         the user is not participating in Factional Warfare. In this
         case the 'HTTP_EVE_WARFACTIONID' won't be set.
@@ -172,6 +184,8 @@ class IGBHeaderParserTestCase(TestCase):
     
     def test_player_on_station(self):
         """
+        test_player_on_station
+        
         In this test we check if the attributes 'stationname' and 'stationid'
         are set correctly. When players are on station these values will be
         set.
@@ -184,6 +198,8 @@ class IGBHeaderParserTestCase(TestCase):
     
     def test_player_not_on_station(self):
         """
+        test_player_not_on_station
+        
         When the player is in space the value the IGB won't send the
         corresponding headers 'HTTP_EVE_STATIONNAME' and 'HTTP_EVE_STATIONID'.
         In that case IGBHeaderParser.stationname and IGBHeaderParser.stationid should
@@ -204,6 +220,8 @@ class IGBHeaderParserTestCase(TestCase):
         
     def test_corp_roles_set(self):
         """
+        test_corp_roles_set
+        
         This test will check if the bitmask '1039225405767189504' will be
         resolved to the following set of roles:
         
@@ -238,6 +256,8 @@ class IGBHeaderParserTestCase(TestCase):
     
     def test_corp_roles_not_set(self):
         """
+        test_corp_roles_not_set
+        
         Tests if attribute 'corprules' returns an empty list and
         attribute 'corprole' returns 0 when the player does not have
         any corp roles.
@@ -251,6 +271,8 @@ class IGBHeaderParserTestCase(TestCase):
 
     def test_is_on_station(self):
         """
+        test_is_on_station
+        
         If the player is in space the station name will not be set
         (empty String). So 'headers.is_on_station' should return False. If the
         player is on a station 'headers.is_on_station' should return True.
@@ -267,3 +289,72 @@ class IGBHeaderParserTestCase(TestCase):
         headers = IGBHeaderParser(request)
         
         self.assertFalse(headers.is_on_station)
+
+    def test_has_alliance(self):
+        """
+        test_has_alliance
+        
+        If the player is not in an alliance the property should be set to False,
+        otherwise True.
+        """
+        request = self.test_request
+        headers = IGBHeaderParser(request)
+        
+        # The alliance name is set, therefor the player is in an alliance and
+        # the property should return True.
+        self.assertTrue(headers.has_alliance)
+        
+        # Now the alliance name is removed from the request headers. That means
+        # that 'has_alliance' should return False.
+        request = self.test_request
+        del request.META['HTTP_EVE_ALLIANCENAME']
+        headers = IGBHeaderParser(request)
+        
+        self.assertFalse(headers.has_alliance)
+
+    def test_has_corproles(self):
+        """
+        test_has_corproles
+        
+        If the player has corproles the property 'has_corproles' must be set to
+        'True'. If the player hs no corproles it must be set to False.
+        """
+        request = self.test_request
+        headers = IGBHeaderParser(request)
+        
+        # In the default test headers the corp role bitmask is set
+        # to 0 (no roles). Therefor 'has_corproles' must be set to False.
+        self.assertFalse(headers.has_corproles)
+        
+        # Now change the corprole header to '1' (director). The property
+        # 'has_corproles' must have the value 'True' now.
+        request = self.test_request
+        request.META['HTTP_EVE_CORPROLE'] = '1'
+        headers = IGBHeaderParser(request)
+        
+        self.assertTrue(headers.has_corproles)
+
+    def test_is_factionwarefare(self):
+        """
+        test_is_factionwarefare
+        
+        Tests if 'is_factionwarfare' is set to 'True' if the player attends
+        faction warfare. If the player is not engaged in faction warfare the
+        property has to be set to 'False'.
+        """
+        request = self.test_request
+        headers = IGBHeaderParser(request)
+        
+        # In the default request (test_request) faction warfare id is set to '8'.
+        # The player is engaged in faction warfare and therefor the property
+        # 'is_factionwarfare' must be set to 'True'.
+        self.assertTrue(headers.is_factionwarfare)
+        
+        # Now the faction warfare id is deleted from the request and the headers
+        # are parsed again. Now the propert 'is_factionwarfare' must be 'False'.
+        request = self.test_request
+        del request.META['HTTP_EVE_WARFACTIONID']
+        headers = IGBHeaderParser(request)
+        
+        self.assertFalse(headers.is_factionwarfare)
+        
