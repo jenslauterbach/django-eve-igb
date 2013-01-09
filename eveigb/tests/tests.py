@@ -248,3 +248,22 @@ class IGBHeaderParserTestCase(TestCase):
     
         self.assertEquals(headers.corproles, [])
         self.assertEquals(headers.corprole, 0)
+
+    def test_is_on_station(self):
+        """
+        If the player is in space the station name will not be set
+        (empty String). So 'headers.is_on_station' should return False. If the
+        player is on a station 'headers.is_on_station' should return True.
+        """
+        request = self.test_request
+        headers = IGBHeaderParser(request)
+        
+        # Station name is set so headers.is_on_station has to return True
+        self.assertTrue(headers.is_on_station)
+        
+        # Remove the station name from the headers and parse the headers again.
+        # This time headers.is_on_station must return False
+        del request.META['HTTP_EVE_STATIONNAME']
+        headers = IGBHeaderParser(request)
+        
+        self.assertFalse(headers.is_on_station)

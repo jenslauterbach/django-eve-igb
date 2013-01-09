@@ -53,7 +53,7 @@ class IGBHeaderParser(object):
 
         # The following headers don't have to be set by the IGB.
         # That's why they are read from the request.META dict with get.
-        # If the header is not set a sane default will be return.
+        # If the header is not set, a sane default will be returned.
 
         # Only set if the player has roles
         self.corprole = int(request.META.get('HTTP_EVE_CORPROLE', 0))
@@ -73,6 +73,7 @@ class IGBHeaderParser(object):
         # TODO: add additional attributes:
         # is_in_wormhole
         # is_on_station
+        self.is_on_station = True if self.stationname != '' else False
         # is_factionwarfare
         # has_alliance
         # has_corproles
