@@ -58,3 +58,19 @@ Note: I want to make running tests easier but didn't found a way yet.
 -------------------
 
 You can find the documentation in the Wiki: [https://github.com/jenslauterbach/django-eve-igb/wiki/Documentation](https://github.com/jenslauterbach/django-eve-igb/wiki/Documentation)
+
+# History
+-------------------
+
+9. January 2013:
+
+* Four new attributes added: is_on_station, is_factionwarfare, has_alliance, has_corproles
+* This release is tagged as version 1.1
+
+12. October 2012:
+
+* Version 1.0 is ready. Stable release with tests and documentation. 
+
+11. October 2012:
+
+* Initial commit with all the basic features.
